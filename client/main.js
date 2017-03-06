@@ -1,4 +1,5 @@
 function main(){
+	// step
 	curTime = Date.now()-startTime;
 	deltaTime = curTime-lastTime;
 
@@ -12,12 +13,15 @@ function main(){
 }
 
 function init(){
+	// initialize input managers
+	// TODO
 
 	window.onresize = onResize;
 	onResize();
 
 
 	worldData = PIXI.loader.resources.world.data;
+	fontData = PIXI.loader.resources.font.data;
 
 	// retrieve the character dimensions from the first entry in the font file
 	// since it's monospace
@@ -86,6 +90,7 @@ function update(){
 	}
 
 	// update input managers
+	// TODO
 }
 
 

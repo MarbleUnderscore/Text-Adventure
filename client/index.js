@@ -56,15 +56,6 @@ $(document).ready(function(){
 	});
 	sounds["bgm"].fadeIn(1,2000);*/
 
-	/*PIXI.loader
-		.add("mouse_up","assets/img/mouse_up.png")
-		.add("mouse_over","assets/img/mouse_over.png")
-		.add("mouse_down","assets/img/mouse_down.png");*/
-
-	/*for(var i = 0; i < stuff.length; ++i){
-		PIXI.loader.add(stuff[i].spr, "assets/img/"+stuff[i].spr+".png");
-	}*/
-
 	PIXI.loader
 		.add("world", "assets/world.txt")
 		.add("font", "assets/img/font/textures.json");
