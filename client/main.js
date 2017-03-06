@@ -19,13 +19,14 @@ function init(){
 
 	worldData = PIXI.loader.resources.world.data;
 
+	// retrieve the character dimensions from the first entry in the font file
+	// since it's monospace
+	CHARACTER_WIDTH = fontData.frames[Object.keys(fontData.frames)[0]].frame.w;
+	CHARACTER_HEIGHT = fontData.frames[Object.keys(fontData.frames)[0]].frame.h;
+
+	// construct the world
 	world = new PIXI.Container();
-
 	world.rows = [];
-
-
-	CHARACTER_WIDTH = 19;
-	CHARACTER_HEIGHT = 43;
 
 	var rows=worldData.split('\n');
 	for(var _y=0, _l=rows.length; _y < _l; ++_y){
@@ -37,7 +38,9 @@ function init(){
 		var cols=rows[_y].split('');
 		for(var _x=0, _k=cols.length; _x < _k; ++_x){
 			var charCode = cols[_x].codePointAt(0).toString(10);
-			if(!PIXI.loader.resources.font.data.frames.hasOwnProperty(charCode)){
+			if(!fontData.frames.hasOwnProperty(charCode)){
+				// skip characters we don't have textures for
+				row.cols.push(null);
 				continue;
 			}
 			var char = new PIXI.Sprite(PIXI.TextureCache[charCode]);
@@ -52,11 +55,6 @@ function init(){
 	}
 
 	game.addChild(world);
-
-	//var text = new PIXI.Text(world);
-	//game.addChild(text);
-
-	console.log(world);
 
 	// start the main loop
 	main();
@@ -74,10 +72,16 @@ function update(){
 		var row = world.rows[_y];
 		for(var _x=0, _k=row.cols.length; _x < _k; ++_x){
 			var char = row.cols[_x];
-
+			if(!char){
+				// skip empty characters
+				continue;
+			}
+			
+			// wave
 			char.y = Math.sin(curTime/100+_y+_x)*5;
 
-			char.texture = PIXI.TextureCache[(Math.floor(curTime/16+_x+_y)%10).toString().codePointAt(0).toString(10)]
+			// assign random number textures
+			//char.texture = PIXI.TextureCache[(Math.floor(curTime/16+_x+_y)%10).toString().codePointAt(0).toString(10)]
 		}
 	}
 
