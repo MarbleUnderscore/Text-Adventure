@@ -18,7 +18,11 @@ Physics.collisionUpdate = function(__entity){
 
 	var _iterations = 0;
 	var _maxIterations = Math.ceil(_length);
-	while(_iterations <= _maxIterations){
+	while(_iterations < _maxIterations){
+		// if both collided, we can quit early
+		if(Math.abs(_d.x) + Math.abs(_d.y) <= 0.0001){
+			break;
+		}
 		
 		// x
 		__entity.x += _d.x;
@@ -105,10 +109,6 @@ Physics.collisionUpdate = function(__entity){
 
 			__entity.y -= _d.y; // move y back 1 iteration to push entity out of ground/ceiling
 			_d.y = 0; // we collided, so don't try to move y anymore
-		}
-		// if both collided, we can quit early
-		if(_d.x == 0 && _d.y == 0){
-			break;
 		}
 		
 		_iterations += 1;
