@@ -43,17 +43,24 @@ function init(){
 
 		var cols=rows[_y].split('');
 		for(var _x=0, _k=cols.length; _x < _k; ++_x){
-			var charCode = cols[_x].codePointAt(0).toString(10);
+			var charString = cols[_x];
+			var charCode = charString.codePointAt(0).toString(10);
+			var char;
 			if(!fontData.frames.hasOwnProperty(charCode)){
 				// skip characters we don't have textures for
-				row.cols.push(null);
-				continue;
+				char = {};
+			}else{
+				char = new PIXI.Sprite(PIXI.TextureCache[charCode]);
+				row.addChild(char);
 			}
-			var char = new PIXI.Sprite(PIXI.TextureCache[charCode]);
+
+			char.charCode = charCode;
+			char.charString = charString;
 			char.x = _x * CHARACTER_WIDTH;
 			char.y = 0;
+			char.solid = !!(charString.trim() != '');
+
 			row.cols.push(char);
-			row.addChild(char);
 		}
 
 		world.rows.push(row);
