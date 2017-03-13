@@ -14,7 +14,9 @@ function main(){
 
 function init(){
 	// initialize input managers
-	// TODO
+	keys.init();
+	keys.capture = [keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.SPACE,keys.ENTER,keys.BACKSPACE,keys.ESCAPE,keys.W,keys.A,keys.S,keys.D,keys.P,keys.M];
+	gamepads.init();
 
 	window.onresize = onResize;
 	onResize();
@@ -90,7 +92,8 @@ function update(){
 	}
 
 	// update input managers
-	// TODO
+	keys.update();
+	gamepads.update();
 }
 
 
