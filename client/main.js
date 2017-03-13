@@ -97,3 +97,35 @@ function update(){
 function render(){
 	renderer.render(game,null,true,false);
 }
+
+
+
+function getInput(){
+	var res = {
+		move:{
+			x: gamepads.getAxis(gamepads.LSTICK_H),
+			y: gamepads.getAxis(gamepads.LSTICK_V)
+		},
+		aim:{
+			x: gamepads.getAxis(gamepads.RSTICK_H),
+			y: gamepads.getAxis(gamepads.RSTICK_V)
+		},
+		jump: gamepads.isJustDown(gamepads.A) || keys.isJustDown(keys.SPACE),
+		jumpExtend: gamepads.isDown(gamepads.A) || keys.isDown(keys.SPACE),
+	};
+
+	if(keys.isDown(keys.A) || keys.isDown(keys.LEFT)){
+		res.move.x -= 1;
+	}if(keys.isDown(keys.D) || keys.isDown(keys.RIGHT)){
+		res.move.x += 1;
+	}if(keys.isDown(keys.W) || keys.isDown(keys.UP)){
+		res.move.y -= 1;
+	}if(keys.isDown(keys.S) || keys.isDown(keys.DOWN)){
+		res.move.y += 1;
+	}
+
+	res.move.x = clamp(-1.0, res.move.x, 1.0);
+	res.move.y = clamp(-1.0, res.move.y, 1.0);
+
+	return res;
+}
