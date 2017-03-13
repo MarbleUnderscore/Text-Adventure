@@ -69,6 +69,13 @@ function init(){
 
 	game.addChild(world);
 
+
+
+	player = new Player();
+	player.x = 20;
+	player.y = 20;
+	game.addChild(player.spr);
+
 	// start the main loop
 	main();
 }
@@ -81,7 +88,65 @@ function onResize() {
 function update(){
 	// game update
 
-	for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
+
+	var input = getInput();
+
+	// acceleration
+	player.vx += input.move.x;
+	//player.vy += input.move.x;
+
+	// flip based on movement
+	if(Math.abs(input.move.x) > 0.01){
+		player.flipped = input.move.x < 0;
+	}
+	// damping
+	player.vx *= 0.75;
+	if(player.walled){
+		// increased damping when sliding down walls
+		player.vy *= 0.5;
+	}else if(player.vy < 0 && input.jumpExtend){
+		player.vy *= 0.99;
+	}else{
+		player.vy *= 0.8;
+	}
+
+	if(player.walled && !player.grounded){
+		// wall climb
+		player.vy += Math.sign(input.move.y)*0.5;
+	}else{
+		// fall
+		player.vy += 1;
+	}
+
+	// jump
+	// can only jump when touching ground/wall
+	if(input.jump && player.canJump()){
+		player.vy = -10;
+
+		// if wall-jumping, push away from wall
+		if(player.canWalljump()){
+			player.vx = -5;
+			if(player.flipped){
+				player.vx *= -1;
+			}
+		}
+
+		// if just jumped, can't be touching ground or walls anymore
+		player.grounded = false;
+		player.walled = false;
+	}
+
+
+	// update physics
+	var _responses = Physics.collisionUpdate(player);
+	for (var _i = 0, _l = _responses.length; _i < _l; ++_i) {
+		console.log(_responses[_i]);
+	}
+
+	player.update();
+
+
+	/*for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
 		var row = world.rows[_y];
 		for(var _x=0, _k=row.cols.length; _x < _k; ++_x){
 			var char = row.cols[_x];
@@ -96,7 +161,7 @@ function update(){
 			// assign random number textures
 			//char.texture = PIXI.TextureCache[(Math.floor(curTime/16+_x+_y)%10).toString().codePointAt(0).toString(10)]
 		}
-	}
+	}*/
 
 	// update input managers
 	keys.update();
@@ -121,7 +186,7 @@ function getInput(){
 			y: gamepads.getAxis(gamepads.RSTICK_V)
 		},
 		jump: gamepads.isJustDown(gamepads.A) || keys.isJustDown(keys.SPACE),
-		jumpExtend: gamepads.isDown(gamepads.A) || keys.isDown(keys.SPACE),
+		jumpExtend: gamepads.isDown(gamepads.A) || keys.isDown(keys.SPACE)
 	};
 
 	if(keys.isDown(keys.A) || keys.isDown(keys.LEFT)){

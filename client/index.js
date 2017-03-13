@@ -66,7 +66,7 @@ $(document).ready(function(){
 });
 
 
-function loadProgressHandler(loader, resource){
+function loadProgressHandler(__loader, __resource){
 	// called during loading
 	console.log('loading: ' + __resource.url);
 	console.log('progress: ' + __loader.progress+'%');
