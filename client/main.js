@@ -145,6 +145,10 @@ function update(){
 
 	player.update();
 
+	// camera
+	game.x = lerp(game.x, -player.x+size.x/2, 0.1);
+	game.y = lerp(game.y, -player.y+size.y/2, 0.1);
+
 
 	/*for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
 		var row = world.rows[_y];
