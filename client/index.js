@@ -6,7 +6,7 @@ var game;
 try{
 	game = new PIXI.Container();
 }catch(e){
-	document.body.innerHTML="<p>Unsupported Browser. Sorry :(</p>";
+	document.body.innerHTML='<p>Unsupported Browser. Sorry :(</p>';
 }
 var resizeTimeout=null;
 
@@ -21,7 +21,7 @@ $(document).ready(function(){
 
 	// try to auto-focus and make sure the game can be focused with a click if run from an iframe
 	window.focus();
-	$(document).on("mousedown",function(event){
+	$(document).on('mousedown',function(){
 		window.focus();
 	});
 
@@ -45,37 +45,37 @@ $(document).ready(function(){
 	PIXI.WRAP_MODES.DEFAULT = PIXI.WRAP_MODES.MIRRORED_REPEAT;
 
 	// add the canvas to the html document
-	$("#display").prepend(renderer.view);
+	$('#display').prepend(renderer.view);
 
 
-	/*sounds["bgm"]=new Howl({
-		urls:["assets/audio/flatgame recording.ogg"],
+	/*sounds['bgm']=new Howl({
+		urls:['assets/audio/flatgame recording.ogg'],
 		autoplay:true,
 		loop:true,
 		volume:0
 	});
-	sounds["bgm"].fadeIn(1,2000);*/
+	sounds['bgm'].fadeIn(1,2000);*/
 
 	PIXI.loader
-		.add("world", "assets/world.txt")
-		.add("font", "assets/img/font/textures.json");
+		.add('world', 'assets/world.txt')
+		.add('font', 'assets/img/font/textures.json');
 
 	PIXI.loader
-		.on("progress", loadProgressHandler)
+		.on('progress', loadProgressHandler)
 		.load(init);
 });
 
 
 function loadProgressHandler(loader, resource){
 	// called during loading
-	console.log("loading: " + resource.url);
-	console.log("progress: " + loader.progress+"%");
+	console.log('loading: ' + __resource.url);
+	console.log('progress: ' + __loader.progress+'%');
 }
 
 
 function _resize(){
-	var w=$("#display").innerWidth();
-	var h=$("#display").innerHeight();
+	var w=$('#display').innerWidth();
+	var h=$('#display').innerHeight();
 	var ratio=size.x/size.y;
 
 	
@@ -114,8 +114,8 @@ function _resize(){
 		ah=size.y;
 	}
 
-	renderer.view.style.width=aw+"px";
-	renderer.view.style.height=ah+"px";
+	renderer.view.style.width=aw+'px';
+	renderer.view.style.height=ah+'px';
 }
 
 PIXI.zero=new PIXI.Point(0,0);

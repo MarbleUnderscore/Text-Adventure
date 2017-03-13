@@ -66,7 +66,7 @@ function init(){
 
 function onResize() {
 	_resize();
-	console.log("Resized",size,scaleMultiplier,[size.x*scaleMultiplier,size.y*scaleMultiplier]);
+	console.log('Resized',size,scaleMultiplier,[size.x*scaleMultiplier,size.y*scaleMultiplier]);
 }
 
 function update(){
