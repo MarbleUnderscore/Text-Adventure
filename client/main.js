@@ -160,9 +160,11 @@ function update(){
 	player.update();
 
 	// camera
-	game.x = lerp(game.x, -player.x+size.x/2, 0.1);
-	game.y = lerp(game.y, -player.y+size.y/2, 0.1);
-
+	game.scale.x = game.scale.y = lerp(game.scale.x, 1 - Math.abs(player.vy+player.vx)/32, 0.1);
+	game.pivot.x = lerp(game.pivot.x, player.spr.x*game.scale.x, 0.03);
+	game.pivot.y = lerp(game.pivot.y, player.spr.y*game.scale.y, 0.03);
+	game.position.x = size.x/2;
+	game.position.y = size.y/2;
 
 	/*for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
 		var row = world.rows[_y];
