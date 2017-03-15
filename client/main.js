@@ -18,6 +18,18 @@ function init(){
 	keys.capture = [keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.SPACE,keys.ENTER,keys.BACKSPACE,keys.ESCAPE,keys.W,keys.A,keys.S,keys.D,keys.P,keys.M];
 	gamepads.init();
 
+	// setup screen filter
+	screen_filter = new CustomFilter(PIXI.loader.resources.screen_shader_v.data, PIXI.loader.resources.screen_shader_f.data);
+	screen_filter.padding = 0;
+	
+
+	setPalette(0xFFFFFF, 0x000000);
+	//setPalette(Math.random()*0xFFFFFF,Math.random()*0xFFFFFF);
+	
+	renderSprite.filterArea = new PIXI.Rectangle(0,0,size.x,size.y);
+
+	renderSprite.filters = [screen_filter];
+
 	window.onresize = onResize;
 	onResize();
 
@@ -82,6 +94,8 @@ function init(){
 
 function onResize() {
 	_resize();
+	screen_filter.uniforms["uScreenSize"] = [size.x,size.y];
+	screen_filter.uniforms["uBufferSize"] = [nextPowerOfTwo(size.x),nextPowerOfTwo(size.y)];
 	console.log('Resized',size,scaleMultiplier,[size.x*scaleMultiplier,size.y*scaleMultiplier]);
 }
 
@@ -173,8 +187,31 @@ function update(){
 }
 
 
+function setPalette(_colorBg, _colorFg){
+	// if a texture already exists, get rid of it
+	if(screen_filter.uniforms["uPalette"].destroy){
+		screen_filter.uniforms["uPalette"].destroy();
+		screen_filter.uniforms["uPalette"]=null;
+	}
+
+	// make a new 2x2 texture
+	// left side is background colour,
+	// right side is foreground colour
+	var g=new PIXI.Graphics();
+	g.beginFill(_colorBg, 1.0);
+	g.drawRect(0,0,1,2);
+	g.endFill();
+	g.beginFill(_colorFg, 1.0);
+	g.drawRect(1,1,1,2);
+	g.endFill();
+
+	// assign the texture to the shader uniform
+	screen_filter.uniforms["uPalette"] = renderer.generateTexture(g);
+}
+
 function render(){
-	renderer.render(game,null,true,false);
+	renderer.render(game,renderTexture,true,false);
+	renderer.render(renderSprite,null,true,false);
 }
 
 

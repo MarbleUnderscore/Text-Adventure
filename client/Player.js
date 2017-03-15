@@ -13,7 +13,7 @@ function Player(){
 	this.flipped = false;
 
 	var g = new PIXI.Graphics();
-	g.beginFill(0);
+	g.beginFill(0xFFFFFF);
 	g.drawRect(this.hit[0],this.hit[1],this.hit[2]-this.hit[0],this.hit[3]-this.hit[1]);
 	g.endFill();
 

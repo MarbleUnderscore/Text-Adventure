@@ -56,14 +56,35 @@ $(document).ready(function(){
 	});
 	sounds['bgm'].fadeIn(1,2000);*/
 
+	// create render texture
+	renderTexture = PIXI.RenderTexture.create(size.x,size.y,PIXI.SCALE_MODES.NEAREST,1);
+	 
+	// create a sprite that uses the render texture
+	renderSprite = new PIXI.Sprite(renderTexture, new PIXI.Rectangle(0,0,size.x,size.y));
+
+	CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+	CustomFilter.prototype.constructor = CustomFilter;
+
 	PIXI.loader
 		.add('world', 'assets/world.txt')
-		.add('font', 'assets/img/font/textures.json');
+		.add('font', 'assets/img/font/textures.json')
+		.add('screen_shader_v','assets/screen_shader.vert')
+		.add('screen_shader_f','assets/screen_shader.frag');
 
 	PIXI.loader
 		.on('progress', loadProgressHandler)
 		.load(init);
 });
+
+
+function CustomFilter(vertSource, fragSource){
+	PIXI.Filter.call(this,
+		// vertex shader
+		vertSource,
+		// fragment shader
+		fragSource
+	);
+}
 
 
 function loadProgressHandler(__loader, __resource){
