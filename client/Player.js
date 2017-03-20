@@ -1,7 +1,7 @@
 function Player(){
 	this.spr = new PIXI.Container();
 
-	this.hit = [-4,-14,3,-2];
+	this.hit = [-20,-14,20,-20];
 
 	this.x = 0;
 	this.y = 0;
