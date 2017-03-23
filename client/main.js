@@ -188,7 +188,13 @@ function update(){
 	if(c){
 		c = c.cols[p.x];
 		if(c){
-			c.scale.x = c.scale.y = 2.0;
+			c.scale.x += 0.1;
+			c.scale.y += 0.1;
+
+			if(mouse.isJustDown(mouse.LEFT)){
+				c.scale.x += 1;
+				c.scale.y += 1;
+			}
 		}
 	}
 
