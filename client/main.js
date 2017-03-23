@@ -60,18 +60,21 @@ function init(){
 			var charCode = charString.codePointAt(0).toString(10);
 			var char;
 			if(!fontData.frames.hasOwnProperty(charCode)){
-				// skip characters we don't have textures for
-				char = {};
-			}else{
-				char = new PIXI.Sprite(PIXI.TextureCache[charCode]);
-				row.addChild(char);
+				// characters we don't have textures for become spaces
+				char.originalCharCode = charCode;
+				charCode = '32';
 			}
+			char = new PIXI.Sprite(PIXI.TextureCache[charCode]);
+			row.addChild(char);
 
 			char.charCode = charCode;
 			char.charString = charString;
 			char.x = _x * CHARACTER_WIDTH;
 			char.y = 0;
+			char.anchor.x = 0.5;
+			char.anchor.y = 0.5;
 			char.solid = !!(charString.trim() != '');
+			char.visible = char.solid;
 
 			row.cols.push(char);
 		}
