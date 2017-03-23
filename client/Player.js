@@ -17,6 +17,10 @@ function Player(){
 	g.drawRect(this.hit[0],this.hit[1],this.hit[2]-this.hit[0],this.hit[3]-this.hit[1]);
 	g.endFill();
 
+	this.camPoint = new PIXI.DisplayObject();
+	this.camPoint.visible = false;
+	this.spr.addChild(this.camPoint);
+
 	this.spr.addChild(g);
 }
 

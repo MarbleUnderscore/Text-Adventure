@@ -161,9 +161,10 @@ function update(){
 	player.update();
 
 	// camera
+	var p = game.toLocal(PIXI.zero, player.camPoint);
 	game.scale.x = game.scale.y = lerp(game.scale.x, 1 - Math.abs(player.vy+player.vx)/32, 0.1);
-	game.pivot.x = lerp(game.pivot.x, player.spr.x*game.scale.x, 0.03);
-	game.pivot.y = lerp(game.pivot.y, player.spr.y*game.scale.y, 0.03);
+	game.pivot.x = lerp(game.pivot.x, p.x, 0.03);
+	game.pivot.y = lerp(game.pivot.y, p.y, 0.03);
 	game.position.x = size.x/2;
 	game.position.y = size.y/2;
 
