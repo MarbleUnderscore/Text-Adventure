@@ -17,6 +17,7 @@ function init(){
 	keys.init();
 	keys.capture = [keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.SPACE,keys.ENTER,keys.BACKSPACE,keys.ESCAPE,keys.W,keys.A,keys.S,keys.D,keys.P,keys.M];
 	gamepads.init();
+	mouse.init('canvas');
 
 	// setup screen filter
 	screen_filter = new CustomFilter(PIXI.loader.resources.screen_shader_v.data, PIXI.loader.resources.screen_shader_f.data);
@@ -186,6 +187,7 @@ function update(){
 	// update input managers
 	keys.update();
 	gamepads.update();
+	mouse.update();
 }
 
 
