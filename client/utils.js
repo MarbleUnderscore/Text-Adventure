@@ -48,3 +48,7 @@ function nextPowerOfTwo(v){
 function fract(v){
 	return v-Math.floor(Math.abs(v))*Math.sign(v);
 }
+
+function clone(_obj){
+	return JSON.parse(JSON.stringify(_obj));
+}
