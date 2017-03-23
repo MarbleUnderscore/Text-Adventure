@@ -69,8 +69,8 @@ function init(){
 
 			char.charCode = charCode;
 			char.charString = charString;
-			char.x = _x * CHARACTER_WIDTH;
-			char.y = 0;
+			char.x = _x * CHARACTER_WIDTH + CHARACTER_WIDTH/2;
+			char.y = CHARACTER_HEIGHT/2;
 			char.anchor.x = 0.5;
 			char.anchor.y = 0.5;
 			char.solid = !!(charString.trim() != '');
