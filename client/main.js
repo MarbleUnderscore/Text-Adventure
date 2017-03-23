@@ -34,6 +34,8 @@ function init(){
 	window.onresize = onResize;
 	onResize();
 
+	scene = new PIXI.Container();
+	game.addChild(scene);
 
 	worldData = PIXI.loader.resources.world.data;
 	fontData = PIXI.loader.resources.font.data;
@@ -83,14 +85,14 @@ function init(){
 		world.addChild(row);
 	}
 
-	game.addChild(world);
+	scene.addChild(world);
 
 
 
 	player = new Player();
 	player.x = 20;
 	player.y = 20;
-	game.addChild(player.spr);
+	scene.addChild(player.spr);
 
 	// start the main loop
 	main();
@@ -164,29 +166,32 @@ function update(){
 	player.update();
 
 	// camera
-	var p = game.toLocal(PIXI.zero, player.camPoint);
-	game.scale.x = game.scale.y = lerp(game.scale.x, 1 - Math.abs(player.vy+player.vx)/32, 0.1);
-	game.pivot.x = lerp(game.pivot.x, p.x, 0.03);
-	game.pivot.y = lerp(game.pivot.y, p.y, 0.03);
-	game.position.x = size.x/2;
-	game.position.y = size.y/2;
+	var p = scene.toLocal(PIXI.zero, player.camPoint);
+	scene.scale.x = scene.scale.y = lerp(scene.scale.x, 1 - Math.abs(player.vy+player.vx)/32, 0.1);
+	scene.pivot.x = lerp(scene.pivot.x, p.x, 0.03);
+	scene.pivot.y = lerp(scene.pivot.y, p.y, 0.03);
+	scene.position.x = size.x/2;
+	scene.position.y = size.y/2;
 
-	/*for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
+	for(var _y=0, _l=world.rows.length; _y < _l; ++_y){
 		var row = world.rows[_y];
 		for(var _x=0, _k=row.cols.length; _x < _k; ++_x){
 			var char = row.cols[_x];
-			if(!char){
-				// skip empty characters
-				continue;
-			}
-			
-			// wave
-			char.y = Math.sin(curTime/100+_y+_x)*5;
-
-			// assign random number textures
-			//char.texture = PIXI.TextureCache[(Math.floor(curTime/16+_x+_y)%10).toString().codePointAt(0).toString(10)]
+			char.scale.x = char.scale.y = lerp(char.scale.x, 1, .1);
 		}
-	}*/
+	}
+
+
+	var p = screenToCell(mouse.pos);
+
+	var c = world.rows[p.y];
+	if(c){
+		c = c.cols[p.x];
+		if(c){
+			c.scale.x = c.scale.y = 2.0;
+		}
+	}
+
 
 	// update input managers
 	keys.update();
@@ -218,7 +223,7 @@ function setPalette(_colorBg, _colorFg){
 }
 
 function render(){
-	renderer.render(game,renderTexture,true,false);
+	renderer.render(scene,renderTexture,true,false);
 	renderer.render(renderSprite,null,true,false);
 }
 
@@ -252,4 +257,21 @@ function getInput(){
 	res.move.y = clamp(-1.0, res.move.y, 1.0);
 
 	return res;
+}
+
+
+
+function screenToWorld(_p){
+	return scene.toLocal(new PIXI.Point(_p.x, _p.y), game);
+}
+
+function worldToCell(_p){
+	return {
+		x: Math.round((_p.x-CHARACTER_WIDTH/2)/CHARACTER_WIDTH),
+		y: Math.round((_p.y-CHARACTER_HEIGHT/2)/CHARACTER_HEIGHT)
+	};
+}
+
+function screenToCell(_p){
+	return worldToCell(screenToWorld(_p));
 }
