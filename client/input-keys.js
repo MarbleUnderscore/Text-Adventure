@@ -50,10 +50,10 @@ var keys={
 	capture:[],
 
 	init:function(){
-		document.addEventListener('keyup', keys.on_up.bind(this), {
+		document.addEventListener('keyup', this.on_up.bind(this), {
 			useCapture: true
 		});
-		document.addEventListener('keydown', keys.on_down.bind(this), {
+		document.addEventListener('keydown', this.on_down.bind(this), {
 			useCapture: true
 		});
 	},
@@ -63,7 +63,7 @@ var keys={
 		this.justUp=[];
 	},
 
-
+	// event handlers
 	on_down:function(event){
 		if(this.down[event.keyCode]!==true){
 			this.down[event.keyCode]=true;
@@ -84,6 +84,7 @@ var keys={
 		}
 	},
 
+	// api
 	isDown:function(_key){
 		return this.down[_key]===true;
 	},
