@@ -94,6 +94,9 @@ function init(){
 	player.y = 20;
 	scene.addChild(player.spr);
 
+
+	editor = new Editor();
+
 	// start the main loop
 	main();
 }
@@ -194,7 +197,16 @@ function update(){
 			if(mouse.isJustDown(mouse.LEFT)){
 				c.scale.x += 1;
 				c.scale.y += 1;
+				editor.caret.x = editor.paragraph.x = p.x;
+				editor.caret.y = editor.paragraph.y = p.y;
 			}
+		}
+	}
+
+
+	for(var i in keys.justDown){
+		if(keys.justDown.hasOwnProperty(i) && keys.isJustDown(i)){
+			editor.type(i);
 		}
 	}
 
